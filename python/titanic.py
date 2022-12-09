@@ -32,9 +32,9 @@ def kesson_table(df):
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 train = pd.read_csv(
-    "C:/Users/hiroki/Desktop/Python_lesson/kaggle/titanic/train.csv")
+    "C:/Users/USERNAME/Desktop/Python_lesson/kaggle/titanic/train.csv")
 test = pd.read_csv(
-    "C:/Users/hiroki/Desktop/Python_lesson/kaggle/titanic/test.csv")
+    "C:/Users/USERNAME/Desktop/Python_lesson/kaggle/titanic/test.csv")
 
 # 欠損値を直す fillna()はNaNの値を()内のものに置き換える
 train["Age"] = train["Age"].fillna(train["Age"].median())
@@ -52,40 +52,33 @@ test["Embarked"][test["Embarked"] == "C"] = 1
 test["Embarked"][test["Embarked"] == "Q"] = 2
 test.Fare[152] = test.Fare.median()
 
-# print(train)
+
 x_train = train[["Pclass", "Sex", "Age", "Fare", "SibSp", "Parch", "Embarked"]]
 y_train = train["Survived"]
 
 x_test = test[["Pclass", "Sex", "Age", "Fare", "SibSp", "Parch", "Embarked"]]
-# print(x_train)
+
 tmp1 = x_train.values.tolist()
 tmp2 = y_train.values.tolist()
 
 sns.heatmap(train.corr('spearman'),  cmap='coolwarm', vmin=-1, vmax=1, annot=True)
 plt.show()
 
-#plt.scatter(x_t0_0, tmp2, marker = "o", c = "b", label = "Not Survived")
-# plt.hist(x_t0_0)
-#plt.scatter(x_t1_0, x_t1_1, marker = "*", c = "k", label = "Survived")
-# plt.xlabel("Pclass")
-# plt.ylabel("Sex")
-# plt.legend()
-# plt.show()
 n_input = x_train.shape[1]
-# print(n_input)
+
 n_output = 1
 
 net = Net(n_input, n_output)
-# print(net)
+
 criterion = nn.BCELoss()
 
 lr = 0.001
 
 optimizer = optim.SGD(net.parameters(), lr=lr)
-# print(x_train.values.tolist())
+
 inputs = torch.tensor(x_train.values.tolist()).float()
 labels = torch.tensor(y_train.values.tolist()).float().view((-1, 1))
-# print(inputs)
+
 inputs_test = torch.tensor(x_test.values.tolist()).float()
 
 num_epochs = 25000
