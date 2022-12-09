@@ -36,9 +36,9 @@ def kesson_table(df):
     return kesson_table_ren_columns
 
 train = pd.read_csv(
-    "C:/Users/hiroki/Desktop/Python_lesson/kaggle/houseprice/train.csv")
+    "C:/Users/USERNAME/Desktop/Python_lesson/kaggle/houseprice/train.csv")
 test = pd.read_csv(
-    "C:/Users/hiroki/Desktop/Python_lesson/kaggle/houseprice/test.csv")
+    "C:/Users/USERNAME/Desktop/Python_lesson/kaggle/houseprice/test.csv")
 #print(test.shape, train.shape)
 all = pd.concat([train.drop(columns = "SalePrice"), test])
 #print(train.shape)
@@ -56,7 +56,7 @@ for column in all.columns:
 
 all = pd.get_dummies(all)
 
-#print(train.index[0], train.index[-1])
+
 # 学習データと予測データに分割して元のデータフレームに戻す。
 train = pd.merge(all.iloc[train.index[0]:train.index[-1] + 1],train['SalePrice'],left_index=True,right_index=True)
 test = all.iloc[train.index[-1] + 1:]
@@ -67,10 +67,7 @@ x_train = train.drop(columns = ["SalePrice"])
 y_train = train["SalePrice"]
 
 n_input = x_train.shape[1]
-#print(x_train.shape)
-#print(test.shape)
-#print(y_train.shape)
-#print(n_input)
+
 n_hidden_1 = 64
 n_hidden_2 = 64
 
@@ -78,7 +75,7 @@ n_output = 1
 
 net = Net(n_input, n_output, n_hidden_1, n_hidden_2).to(device)
 lr = 0.01
-#print(net)
+
 criterion = nn.MSELoss()
 optimizer = optim.Adam(net.parameters(), lr = lr)
 num_epochs = 1500
@@ -86,7 +83,7 @@ num_epochs = 1500
 
 inputs = torch.tensor(x_train.values.tolist()).float()
 labels = torch.tensor(y_train.values.tolist()).float().view((-1, 1))
-#print(inputs)
+
 history = np.zeros((0, 2))
 
 for epoch in range(num_epochs):
@@ -94,7 +91,7 @@ for epoch in range(num_epochs):
     optimizer.zero_grad()
 
     outputs = net(inputs.to(device))
-    #print(outputs)
+
     loss = criterion(outputs, labels.to(device))
 
     loss.backward()
@@ -111,7 +108,7 @@ print(f"最終状態: 損失: {history[-1, 1]:.5f}")
 
 pred = net(torch.tensor(test.values.tolist()).float().to(device))
 pred = torch.exp(pred)
-#print(pred)
+
 id = np.array(test["Id"]).astype(int)
 my_solution = pd.DataFrame(pred.cpu().view(-1).detach().numpy(), id, columns = ["SalePrice"])
 
