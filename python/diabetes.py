@@ -1,3 +1,9 @@
+"""
+SIGNATE 【第32回_Beginner限定コンペ】診断データを使った糖尿病発症予測
+https://signate.jp/competitions/748
+このコードは上記のコンペで作成したコードです。
+"""
+
 import sys
 import pandas as pd
 import matplotlib.pyplot as plt
